@@ -1,8 +1,5 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
-<!-- This site is hosted on Netlify. Anyone can build and deploy a site
-     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=ef250703-0fb0-4937-a32e-e6e258660e3f
-     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>SOOP 파트너스 멘토링 관리</title>
@@ -93,10 +90,11 @@ var SEED=/*SEED_START*/[{"id":"s1","k":"m","uid":"rohaenm","nick":"로하이엔�
 var ADMIN=!/[?&]view(=|&|$)/.test(location.search);
 var LSK='soop-mentoring-v1';
 function persist(){if(!ADMIN)return;try{localStorage.setItem(LSK,JSON.stringify(DATA))}catch(e){toast('이 브라우저에 저장하지 못했어요. 시크릿 모드이거나 저장 공간이 부족할 수 있어요')}}
-function seedData(){return clone(SEED).map(function(o){o.ms=o.ms||[];return o})}
+function fixM(o){o.ms=(o.ms||[]).map(function(m){m.start=normDate(m.start);m.end=normDate(m.end);return m});return o}
+function seedData(){return clone(SEED).map(fixM)}
 function loadLocal(){
   DATA=seedData();if(!ADMIN)return;
-  try{var raw=localStorage.getItem(LSK);if(raw){var a=JSON.parse(raw);if(Array.isArray(a))DATA=a.map(function(o){o.ms=o.ms||[];return o})}}catch(e){}}
+  try{var raw=localStorage.getItem(LSK);if(raw){var a=JSON.parse(raw);if(Array.isArray(a))DATA=a.map(fixM)}}catch(e){}}
 async function save(d){
   var id=d.id,body=clone(d);delete body.id;
   if(!DB){if(id){DATA=DATA.map(function(x){return x.id==id?d:x})}else{d.id='l'+Date.now()+Math.random().toString(36).slice(2,6);DATA.push(d)}persist();render();return}
@@ -139,8 +137,8 @@ function menteeView(id){
   var a='<div class="bar"><button class="btn" onclick="location.hash=\'mentors\'">← 멘토 리스트</button><select id="sel">'+opt('p')+opt('m')+'</select><button class="btn adm-only" data-a="edm">멘토 정보 수정</button><button class="btn adm-only" data-a="impm">📥 멘티 엑셀 불러오기</button><button class="btn pri adm-only" data-a="addmt">+ 멘티 추가</button></div>';
   a+='<div class="box '+c.k+'"><table><thead><tr>'+['멘토 아이디','닉네임','구분','카테고리','신청일','등록일','멘티 수','상태','자격 해지일','자격 해지 사유','담당자'].map(function(t){return'<th>'+t+'</th>'}).join('')+'</tr></thead><tbody><tr><td>'+esc(c.uid)+'</td><td>'+esc(c.nick)+'</td><td>'+KN[c.k]+'</td><td>'+esc(c.cat)+'</td><td>'+esc(c.apply)+'</td><td>'+esc(c.reg)+'</td><td>'+cnt(c)+'</td><td>'+esc(stat(c))+'</td><td>'+esc(c.endDate)+'</td><td>'+esc(c.endWhy)+'</td><td>'+esc(c.mgr)+'</td></tr></tbody></table></div><div class="gap"></div>';
   var sl=function(m){var u=/^https?:\/\//i.test(m.url||'')?m.url:'';return u?'<a class="lnk" href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">'+esc(m.nick)+'</a>':'<span class="lnk">'+esc(m.nick)+'</span>'};
-  a+='<div class="box p"><table><thead><tr><th>멘티</th><th>상태</th><th>요청일</th><th>지원 시작일</th><th>지원 종료일</th><th>종료 사유</th><th class="adm-only"></th></tr></thead><tbody>';
-  a+=c.ms.length?c.ms.map(function(m,i){return'<tr><td>'+sl(m)+'</td><td>'+esc(m.status)+'</td><td>'+esc(m.req)+'</td><td>'+esc(m.start)+'</td><td>'+esc(m.end)+'</td><td>'+esc(m.why||m.note)+'</td><td class="ed adm-only"><button data-a="em" data-i="'+i+'" title="수정">✎</button></td></tr>'}).join(''):'<tr><td colspan="7" class="empty">'+(!ADMIN?(c.cnt?'멘티 상세 목록이 아직 등록되지 않았어요.':'등록된 멘티가 없어요.'):c.cnt?'엑셀의 멘티 수는 '+c.cnt+'명이지만 멘티 상세 목록은 아직 없어요. “멘티 엑셀 불러오기”나 “+ 멘티 추가”로 넣을 수 있어요.':'등록된 멘티가 없어요. “멘티 엑셀 불러오기”로 넣을 수 있어요.')+'</td></tr>';
+  a+='<div class="box p"><table><thead><tr><th>멘티</th><th>상태</th><th>지원 시작일</th><th>지원 종료일</th><th>별풍선</th><th>지원금</th><th>방송일수</th><th>방송시간</th><th class="adm-only"></th></tr></thead><tbody>';
+  a+=c.ms.length?c.ms.map(function(m,i){return'<tr><td>'+sl(m)+'</td><td>'+esc(m.status)+'</td><td>'+esc(m.start)+'</td><td>'+esc(m.end)+'</td><td>'+esc(fmtN(m.bj))+'</td><td>'+esc(m.fund)+'</td><td>'+esc(m.days)+'</td><td>'+esc(m.hours)+'</td><td class="ed adm-only"><button data-a="em" data-i="'+i+'" title="수정">✎</button></td></tr>'}).join(''):'<tr><td colspan="9" class="empty">'+(!ADMIN?(c.cnt?'멘티 상세 목록이 아직 등록되지 않았어요.':'등록된 멘티가 없어요.'):c.cnt?'엑셀의 멘티 수는 '+c.cnt+'명이지만 멘티 상세 목록은 아직 없어요. “멘티 엑셀 불러오기”나 “+ 멘티 추가”로 넣을 수 있어요.':'등록된 멘티가 없어요. “멘티 엑셀 불러오기”로 넣을 수 있어요.')+'</td></tr>';
   return a+'</tbody></table></div>'}
 /* ---------- 입력 폼 ---------- */
 function closeM(){$('ov').className='ov'}
@@ -162,18 +160,20 @@ function editMentor(id){
     await save(d)},ex?function(){return del(ex.id).then(function(){if(location.hash.indexOf('mentee')==1)location.hash='mentors'})}:null)}
 function editMentee(i){
   var c=find(CUR);if(!c)return;var m=i>=0?c.ms[i]:{},D='YYYY-MM-DD',st=m.status||'활동중',so=['활동중','수락 대기','종료'];if(so.indexOf(st)<0)so.push(st);
-  var v=clone(m);v.status=st;if(!v.why&&v.note)v.why=v.note;
-  openForm(i>=0?'멘티 수정':'멘티 추가',[{k:'nick',l:'멘티 (닉네임(아이디))'},{k:'url',l:'링크 (https://…)'},{k:'status',l:'상태',o:so},{k:'req',l:'요청일',p:D},{k:'start',l:'지원 시작일',p:D},{k:'end',l:'지원 종료일',p:D},{k:'why',l:'종료 사유'}],v,async function(o){
+  var v=clone(m);v.status=st;
+  openForm(i>=0?'멘티 수정':'멘티 추가',[{k:'nick',l:'멘티 (닉네임(아이디))'},{k:'url',l:'링크 (https://…)'},{k:'status',l:'상태',o:so},{k:'start',l:'지원 시작일',p:D},{k:'end',l:'지원 종료일',p:D},{k:'bj',l:'별풍선'},{k:'fund',l:'지원금'},{k:'days',l:'방송일수'},{k:'hours',l:'방송시간'}],v,async function(o){
     if(o.url&&!/^https?:\/\//i.test(o.url))throw new Error('링크는 http:// 또는 https://로 시작해야 해요')
-    var d=clone(c),n=Object.assign({},i>=0?c.ms[i]:{},o);delete n.note;if(i>=0)d.ms[i]=n;else d.ms.push(n);await save(d)},i>=0?function(){var d=clone(c);d.ms.splice(i,1);return save(d)}:null)}
+    var d=clone(c),n=Object.assign({},i>=0?c.ms[i]:{},o);delete n.note;delete n.req;delete n.why;if(i>=0)d.ms[i]=n;else d.ms.push(n);await save(d)},i>=0?function(){var d=clone(c);d.ms.splice(i,1);return save(d)}:null)}
 /* ---------- 엑셀 불러오기 ---------- */
+function normDate(s){var m=/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/.exec(String(s||'').trim());if(!m)return s;var y=+m[3];if(y<100)y+=2000;return y+'-'+('0'+m[1]).slice(-2)+'-'+('0'+m[2]).slice(-2)}
+function fmtN(s){return /^\d+$/.test(String(s||''))?Number(s).toLocaleString('ko-KR'):s}
 function col(r,l,from){for(var i=from;i<r.length;i++)if(r[i]==l)return i;return -1}
 function readSheet(ws){
   var rows=[],links=[];if(!ws||!ws['!ref'])return{rows:rows,links:links};
   var rg=XLSX.utils.decode_range(ws['!ref']);
   for(var R=rg.s.r;R<=rg.e.r;R++){var r=[],l=[];
     for(var C=rg.s.c;C<=rg.e.c;C++){var c=ws[XLSX.utils.encode_cell({r:R,c:C})],v='',u='';
-      if(c){if(c.t=='n'&&c.z&&XLSX.SSF.is_date(c.z))v=XLSX.SSF.format('yyyy-mm-dd',c.v);else v=c.w!=null?c.w:(c.v==null?'':String(c.v));if(c.l&&c.l.Target)u=c.l.Target}
+      if(c){if(c.t=='n'&&((c.z&&XLSX.SSF.is_date(c.z))||/^\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}$/.test(c.w||'')))v=XLSX.SSF.format('yyyy-mm-dd',c.v);else v=c.w!=null?c.w:(c.v==null?'':String(c.v));if(c.l&&c.l.Target)u=c.l.Target}
       r.push(String(v).trim());l.push(u)}
     rows.push(r);links.push(l)}
   return{rows:rows,links:links}}
@@ -207,7 +207,7 @@ function parseMentees(rows,links){
     if(!H)return;
     var g=function(l){return H[l]===undefined?'':(r[H[l]]||'')},nick=g('멘티');if(!nick)return;
     var u=H['멘티']!==undefined?((links[i]||[])[H['멘티']]||''):'';
-    var m={nick:nick,url:/^https?:\/\//i.test(u)?u:'',status:g('상태'),req:g('요청일'),start:g('지원 시작일'),end:g('지원 종료일'),why:g('종료 사유')},k=mid(m);
+    var m={nick:nick,url:/^https?:\/\//i.test(u)?u:'',status:g('상태'),start:normDate(g('지원 시작일')),end:normDate(g('지원 종료일')),bj:g('별풍선'),fund:g('지원금'),days:g('방송일수'),hours:g('방송시간')},k=mid(m);
     if(idx[k]!==undefined)out[idx[k]]=m;else{idx[k]=out.length;out.push(m)}});
   return out}
 function parseMenteeWB(wb){var out=[];wb.SheetNames.forEach(function(sn){var s=readSheet(wb.Sheets[sn]);out=out.concat(parseMentees(s.rows,s.links))});return out}
@@ -235,22 +235,23 @@ function menteePreview(L){
   var keep={},nw=0,up=0,lk=0;
   L.forEach(function(m){var j=c.ms.findIndex(function(x){return mid(x)==mid(m)});if(j>-1){up++;keep[j]=1}else nw++;if(m.url)lk++});
   var gone=c.ms.filter(function(x,i){return!keep[i]});
-  $('md').innerHTML='<h3>멘티 엑셀 불러오기</h3><ul class="pv"><li>대상 멘토 <span>'+esc(lab(c))+'</span></li><li>멘티 '+L.length+'명 <span>(새로 '+nw+' · 기존 갱신 '+up+')</span></li><li>링크 포함 '+lk+'명</li></ul><p class="mut" style="margin:0">엑셀 순서대로 정리돼요. 같은 아이디는 엑셀 내용으로 갱신하고, 엑셀에 링크가 없으면 기존 링크를 유지해요.</p>'+(gone.length?'<label class="ck"><input type="checkbox" id="rmgone">엑셀에 없는 기존 멘티 '+gone.length+'명 제거</label>':'')+'<div class="acts"><button class="btn" id="mcx">취소</button><button class="btn pri" id="msv">적용</button></div>';
+  $('md').innerHTML='<h3>멘티 엑셀 불러오기</h3><ul class="pv"><li>대상 멘토 <span>'+esc(lab(c))+'</span></li><li>멘티 '+L.length+'명 <span>(새로 '+nw+' · 기존 갱신 '+up+')</span></li><li>링크 포함 '+lk+'명</li></ul><p class="mut" style="margin:0">이 멘토의 멘티 목록이 엑셀 내용으로 최신화돼요(엑셀 순서 기준). 엑셀에 링크가 없으면 기존 링크를 유지해요.</p>'+(gone.length?'<label class="ck"><input type="checkbox" id="rmgone" checked>엑셀에 없는 기존 멘티 '+gone.length+'명 제거 (최신화)</label>':'')+'<div class="acts"><button class="btn" id="mcx">취소</button><button class="btn pri" id="msv">적용</button></div>';
   $('ov').className='ov on';$('mcx').onclick=closeM;
   $('msv').onclick=async function(){var b=this,rm=$('rmgone')&&$('rmgone').checked;b.disabled=true;
     try{var d=clone(c);
-      var ms=L.map(function(m){var j=c.ms.findIndex(function(x){return mid(x)==mid(m)}),old=j>-1?c.ms[j]:{},n=Object.assign({},old,m);if(!m.url&&old.url)n.url=old.url;delete n.note;return n});
+      var ms=L.map(function(m){var j=c.ms.findIndex(function(x){return mid(x)==mid(m)}),old=j>-1?c.ms[j]:{},n=Object.assign({},m);if(!m.url&&old.url)n.url=old.url;return n});
       d.ms=rm?ms:ms.concat(gone);await save(d);closeM();toast('불러오기를 마쳤어요 · 멘티 '+L.length+'명')}
     catch(e){b.disabled=false;toast('저장하지 못했어요. 편집 권한이 필요할 수 있어요')}}}
 $('f').addEventListener('change',function(e){
   var file=e.target.files[0];e.target.value='';if(!file)return;
   if(typeof XLSX=='undefined'){toast('엑셀 도구를 불러오지 못했어요. 새로고침 후 다시 시도해 주세요');return}
-  var r=new FileReader();r.onload=function(){try{var wb=XLSX.read(r.result,{type:'array'});if(IMP=='m')menteePreview(parseMenteeWB(wb));else importPreview(parseWB(wb))}catch(err){toast('파일을 읽지 못했어요')}};r.readAsArrayBuffer(file)});
+  var r=new FileReader();r.onload=function(){try{var wb=XLSX.read(r.result,{type:'array',cellNF:true});if(IMP=='m')menteePreview(parseMenteeWB(wb));else importPreview(parseWB(wb))}catch(err){toast('파일을 읽지 못했어요')}};r.readAsArrayBuffer(file)});
 /* ---------- 배포용 파일 ---------- */
+function cleanSrc(s){return s.replace(/<!--(?:(?!-->)[\s\S])*?Netlify(?:(?!-->)[\s\S])*?-->\s*/g,'').replace(/<script[^>]*\/\.netlify\/[^>]*><\/script>\s*/g,'').replace(/\s+$/,'')+'\n'}
 async function exportSite(){
   try{
     var r=await fetch(location.pathname,{cache:'no-store'});if(!r.ok)throw 0;
-    var src=await r.text(),s0='/*SEED_'+'START*/',s1='/*SEED_'+'END*/',a=src.indexOf(s0),b=src.indexOf(s1);if(a<0||b<a)throw 0;
+    var src=cleanSrc(await r.text()),s0='/*SEED_'+'START*/',s1='/*SEED_'+'END*/',a=src.indexOf(s0),b=src.indexOf(s1);if(a<0||b<a)throw 0;
     var out=src.slice(0,a)+s0+JSON.stringify(DATA).replace(/<\//g,'<\\/')+src.slice(b);
     var u=URL.createObjectURL(new Blob([out],{type:'text/html'})),l=document.createElement('a');l.href=u;l.download='index.html';document.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);
     toast('index.html을 내려받았어요. Netlify에 다시 올리면 팀원 화면에 반영돼요')
@@ -289,4 +290,3 @@ if(ADMIN)document.body.classList.add('adm');
       DATA=s.docs.map(function(d){var o=Object.assign({},d.data());o.id=d.id;o.ms=o.ms||[];return o});render()},function(){clearTimeout(t);offline()})
   }).catch(function(){clearTimeout(t);offline()})})();
 </script></body></html>
-<script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="ef250703-0fb0-4937-a32e-e6e258660e3f" data-app-host="app.netlify.com" data-account-tier="free"></script>
