@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>SOOP 파트너스 멘토링 관리</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--ink:#16181d;--mute:#6b7280;--line:#d9dde3;--blue:#1a5fd0;--hb:#cfe0f8;--hy:#fff2cc;--red:#d92d20;--hov:#f1f6ff;--dk:#16181d;--dkt:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1115;--card:#1a1d24;--ink:#eef0f3;--mute:#9aa1ad;--line:#333844;--blue:#7fadff;--hb:#22344f;--hy:#4a4126;--red:#ff7b72;--hov:#222a38;--dk:#eef0f3;--dkt:#16181d}}
+:root[data-theme="dark"]{--bg:#0f1115;--card:#1a1d24;--ink:#eef0f3;--mute:#9aa1ad;--line:#333844;--blue:#7fadff;--hb:#22344f;--hy:#4a4126;--red:#ff7b72;--hov:#222a38;--dk:#eef0f3;--dkt:#16181d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-size:14px}
+button,select,input{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
+.wrap{max-width:1360px;margin:0 auto;padding:18px 16px 40px}
+header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+h1{font-size:20px;margin:0}
+nav{display:flex;gap:4px;background:var(--card);border-radius:12px;padding:4px}
+nav button{padding:9px 18px;border-radius:9px;font-weight:700;color:var(--mute)}
+nav button.on{background:var(--dk);color:var(--dkt)}
+.theme{margin-left:auto;padding:8px 12px;border-radius:10px;background:var(--card);font-weight:600}
+.tools,.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.btn{padding:8px 14px;border-radius:10px;background:var(--card);font-weight:700;border:1px solid var(--line)}
+.btn.pri{background:var(--dk);color:var(--dkt);border-color:transparent}.btn.dan{color:var(--red)}.btn:disabled{opacity:.5}
+select,input{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;max-width:100%}
+#q{flex:1;min-width:200px}
+.seg{display:flex;gap:4px;background:var(--card);border-radius:12px;padding:4px}
+.seg button{padding:7px 14px;border-radius:9px;font-weight:700;color:var(--mute)}.seg button.on{background:var(--dk);color:var(--dkt)}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}.cols2 .sec{margin:0;min-width:0}@media (max-width:980px){.cols2{grid-template-columns:1fr}}
+.sec{margin:0 0 22px}.sec h2{font-size:16px;margin:0 0 8px}.sec h2 span{color:var(--mute);font-weight:500;font-size:13px}
+.box{background:var(--card);border-radius:14px;overflow:auto;max-height:70vh}
+table{border-collapse:collapse;width:100%;font-size:13.5px;white-space:nowrap}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:center}
+th{position:sticky;top:0;z-index:1}.p th{background:var(--hb)}.m th{background:var(--hy)}
+tbody tr.go{cursor:pointer}tbody tr.go:hover td{background:var(--hov)}
+.red td{color:var(--red)}
+body:not(.adm) .adm-only{display:none!important}
+th.sortable{cursor:pointer;user-select:none}th.sortable:hover{filter:brightness(.94)}
+.lnk{color:var(--blue);font-weight:600}a.lnk{text-decoration:underline}.mut{color:var(--mute)}
+.ed{width:44px;padding:2px}.ed button{color:var(--mute);padding:6px 8px}
+.gap{height:14px}.empty{padding:34px;color:var(--mute);text-align:center}
+.note{margin-top:20px;color:var(--mute);font-size:12px;text-align:center}
+.ov{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;padding:16px;z-index:9}.ov.on{display:flex}
+.md{background:var(--card);border-radius:16px;padding:20px;width:100%;max-width:440px;max-height:88vh;overflow:auto}
+.md h3{margin:0 0 14px}.fl{display:block;margin-bottom:12px;font-weight:600;font-size:13px}
+.fl input,.fl select{display:block;width:100%;margin-top:5px;background:var(--bg)}
+.acts{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.pv{margin:0 0 10px;padding-left:18px;line-height:1.7}.pv li span{color:var(--mute)}
+.ck{display:flex;gap:8px;align-items:center;margin:10px 0 0;font-weight:600}.ck input{padding:0}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--dk);color:var(--dkt);padding:10px 16px;border-radius:10px;display:none;z-index:10;max-width:90vw}
+</style></head><body><div class="wrap">
+<header>
+<h1>SOOP 파트너스 멘토링 관리</h1>
+<nav><button id="n1">멘토 리스트</button><button id="n2">멘티 리스트</button></nav>
+<button class="theme" id="theme">☀ 라이트</button>
+</header>
+<div class="tools"><button class="btn pri adm-only" data-a="imp">📥 엑셀 불러오기</button><button class="btn adm-only" data-a="addp">+ 멘토 추가</button><button class="btn pri adm-only" data-a="pub">📤 배포용 파일 만들기</button><button class="btn dan adm-only" data-a="rst">배포본으로 되돌리기</button><span class="mut" id="st">불러오는 중…</span></div>
+<div id="flt"><div class="tools"><input id="q" placeholder="아이디·닉네임 검색 (쉼표로 여러 명)"><select id="cat"></select></div><div class="tools"><div class="seg" id="seg"></div><select id="sk" title="정렬 기준"></select><button class="btn" id="sd"></button></div></div>
+<main id="main"><div class="empty">불러오는 중…</div></main>
+<p class="note" id="nt"></p>
+</div>
+<div class="ov" id="ov"><div class="md" id="md"></div></div>
+<div id="toast"></div>
+<input type="file" id="f" accept=".xlsx,.xls,.csv" hidden>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+var DB=null,DATA=[],ready=false,CUR=null,IMP='p',LV={kind:'전체',cat:'전체',q:'',sk:'',sd:'desc'};
+var SORTS=[['','기본 (엑셀 순서)'],['cnt','멘티 수'],['uid','멘토 아이디'],['nick','닉네임'],['cat','카테고리'],['status','상태']];
+var HK={'멘토 아이디':'uid','닉네임':'nick','카테고리':'cat','신청일':'apply','등록일':'reg','멘티 수':'cnt','상태':'status','자격 해지일':'endDate','자격 해지 사유':'endWhy','담당자':'mgr'};
+function defDir(k){return k=='cnt'||k=='apply'||k=='reg'||k=='endDate'?'desc':'asc'}
+function sval(x,k){return k=='cnt'?cnt(x):k=='status'?stat(x):(x[k]||'')}
+function sortList(L){
+  var k=LV.sk;if(!k)return L;var d=LV.sd=='desc'?-1:1;
+  return L.slice().sort(function(a,b){
+    var x=sval(a,k),y=sval(b,k),bx=k!='cnt'&&(x===''||x==='-'),by=k!='cnt'&&(y===''||y==='-');
+    if(bx!=by)return bx?1:-1;
+    var c=k=='cnt'?x-y:String(x).localeCompare(String(y),'ko');
+    return c?c*d:(a.o||0)-(b.o||0)})}
+var KN={p:'파트너',m:'MCN'},KT={p:'파트너 스트리머',m:'MCN'};
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(function(){t.style.display='none'},3200)}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function cnt(x){return x.ms.length||x.cnt||0}
+function stat(x){return x.status||(x.ok===false?'미신청':'활동중')}
+function lab(x){var n=x.nick||'',u=x.uid||'';return n&&u&&n!=u?n+'('+u+')':(n||u)}
+function list(k){return DATA.filter(function(x){return x.k==k}).sort(function(a,b){return(a.o||0)-(b.o||0)})}
+function nextO(){return DATA.reduce(function(m,x){return Math.max(m,x.o||0)},0)+1}
+function find(id){return DATA.filter(function(x){return x.id==id})[0]}
+var SEED=/*SEED_START*/[{"id": "s1", "k": "m", "uid": "rohaenm", "nick": "rohaenm", "cat": "토크/캠방", "apply": "2026-11-11", "reg": "2026-11-11", "cnt": 3, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 1}, {"id": "s2", "k": "m", "uid": "crownent", "nick": "crownent", "cat": "토크/캠방", "apply": "2026-11-09", "reg": "2026-11-09", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 2}, {"id": "s3", "k": "m", "uid": "gka5525", "nick": "gka5525", "cat": "토크/캠방", "apply": "2026-11-02", "reg": "2026-11-02", "cnt": 1, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 3}, {"id": "s4", "k": "m", "uid": "jaypark7979", "nick": "jaypark7979", "cat": "토크/캠방", "apply": "2026-10-29", "reg": "2026-10-29", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 4}, {"id": "s5", "k": "m", "uid": "kjent88", "nick": "kjent88", "cat": "토크/캠방", "apply": "2026-10-29", "reg": "2026-10-29", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 5}, {"id": "s6", "k": "m", "uid": "zeroent", "nick": "zeroent", "cat": "토크/캠방", "apply": "2026-10-29", "reg": "2026-10-29", "cnt": 1, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 6}, {"id": "s7", "k": "m", "uid": "biasent", "nick": "BIAS_ENT", "cat": "토크/캠방", "apply": "2026-10-28", "reg": "2026-10-28", "cnt": 8, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 7}, {"id": "s8", "k": "m", "uid": "offairenm", "nick": "offairenm", "cat": "토크/캠방", "apply": "2026-10-22", "reg": "2026-10-22", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 8}, {"id": "s9", "k": "m", "uid": "mh1605", "nick": "한남동", "cat": "토크/캠방", "apply": "2026-10-22", "reg": "2026-10-22", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 9}, {"id": "s10", "k": "m", "uid": "yewonent", "nick": "yewonent", "cat": "토크/캠방", "apply": "2026-10-22", "reg": "2026-10-22", "cnt": 1, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 10}, {"id": "s11", "k": "m", "uid": "s27ent", "nick": "s27ent", "cat": "뮤직/댄스", "apply": "2026-10-20", "reg": "2026-10-20", "cnt": 2, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 11}, {"id": "s12", "k": "m", "uid": "hottie", "nick": "hottie(1)", "cat": "토크/캠방", "apply": "2026-10-13", "reg": "2026-10-14", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 12}, {"id": "s13", "k": "m", "uid": "j7j7s77", "nick": "햇식탯그", "cat": "토크/캠방", "apply": "2026-10-21", "reg": "2026-10-21", "cnt": 1, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 13}, {"id": "s14", "k": "m", "uid": "koreated", "nick": "koreated", "cat": "토크/캠방", "apply": "2026-10-14", "reg": "2026-10-14", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 14}, {"id": "s15", "k": "m", "uid": "supermt", "nick": "슈퍼민트", "cat": "토크/캠방", "apply": "2026-11-09", "reg": "2026-11-09", "cnt": 2, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 15}, {"id": "s16", "k": "m", "uid": "creatorbus", "nick": "creatorbus", "cat": "버추얼", "apply": "2026-10-08", "reg": "2026-10-12", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 16}, {"id": "s17", "k": "m", "uid": "trinsuper", "nick": "trinsuper", "cat": "버추얼", "apply": "2026-10-07", "reg": "2026-10-07", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 17}, {"id": "s18", "k": "m", "uid": "moaisuper", "nick": "moaisuper", "cat": "버추얼", "apply": "2026-10-07", "reg": "2026-10-07", "cnt": 2, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 18}, {"id": "s19", "k": "m", "uid": "thecube", "nick": "커피네잔", "cat": "토크/캠방", "apply": "2026-10-06", "reg": "2026-10-06", "cnt": 1, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 19}, {"id": "s20", "k": "m", "uid": "Kh10102790", "nick": "Kh10102790", "cat": "토크/캠방", "apply": "2026-10-06", "reg": "2026-10-06", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 20}, {"id": "s21", "k": "m", "uid": "mouse1981", "nick": "andy99", "cat": "토크/캠방", "apply": "2026-10-06", "reg": "2026-10-06", "cnt": 2, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 21}, {"id": "s22", "k": "m", "uid": "rkwkdk123", "nick": "ㅋㅁㅋㅁ1", "cat": "토크/캠방", "apply": "2026-10-06", "reg": "2026-10-06", "cnt": 5, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 22}, {"id": "s23", "k": "p", "uid": "afueo022", "nick": "Q-22", "cat": "토크/캠방", "apply": "2026-10-01", "reg": "2026-10-01", "cnt": 5, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 23}, {"id": "s24", "k": "m", "uid": "newest7858", "nick": "동수만쉐", "cat": "토크/캠방", "apply": "2026-10-01", "reg": "2026-10-01", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 24}, {"id": "s25", "k": "m", "uid": "afueo028", "nick": "SOOP_팬지", "cat": "토크/캠방", "apply": "2026-10-01", "reg": "2026-10-01", "cnt": 2, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 25}, {"id": "s26", "k": "m", "uid": "afqvtest3", "nick": "afqvtest3", "cat": "게임", "apply": "2026-10-01", "reg": "2026-10-01", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 26}, {"id": "s27", "k": "p", "uid": "afqvtest1", "nick": "afqvtest1_", "cat": "게임", "apply": "2026-10-01", "reg": "2026-10-01", "cnt": 1, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 27}, {"id": "s28", "k": "p", "uid": "jintae3492", "nick": "뚀치", "cat": "토크/캠방", "apply": "2026-10-01", "reg": "2026-10-01", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 28}, {"id": "s29", "k": "p", "uid": "itsme1922", "nick": "[M]메이", "cat": "뮤직/댄스", "apply": "2026-10-16", "reg": "2026-10-19", "cnt": 2, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 29}, {"id": "s30", "k": "p", "uid": "jungay4", "nick": "냐냠띤냠띤", "cat": "토크/캠방", "apply": "2026-10-01", "reg": "2026-10-01", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 30}, {"id": "s31", "k": "p", "uid": "eunyoung1238", "nick": "그릴래영", "cat": "생활/정보", "apply": "2026-10-23", "reg": "2026-10-26", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 31}, {"id": "s32", "k": "p", "uid": "chzh1chzh", "nick": "[FantaJ]지유", "cat": "토크/캠방", "apply": "2026-10-19", "reg": "2026-10-19", "cnt": 1, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 32}, {"id": "s33", "k": "p", "uid": "dign1461", "nick": "♡혜밍", "cat": "토크/캠방", "apply": "2026-10-19", "reg": "2026-10-19", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 33}, {"id": "s34", "k": "p", "uid": "jhw1729", "nick": "뽀현욱", "cat": "뮤직/댄스", "apply": "2026-10-21", "reg": "2026-10-21", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 34}, {"id": "s35", "k": "p", "uid": "fall0715", "nick": "가을님♥", "cat": "토크/캠방", "apply": "2026-10-02", "reg": "2026-10-02", "cnt": 2, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 35}, {"id": "s36", "k": "p", "uid": "brainzerg7", "nick": "Calm_김윤환", "cat": "게임", "apply": "2026-10-22", "reg": "2026-10-26", "cnt": 1, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 36}, {"id": "s37", "k": "p", "uid": "eunz1nara", "nick": "양팡♥", "cat": "먹방/쿡방", "apply": "2026-10-22", "reg": "2026-10-26", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 37}, {"id": "s38", "k": "p", "uid": "dmsgkdn12", "nick": "엔돌핀♥", "cat": "토크/캠방", "apply": "2026-10-18", "reg": "2026-10-19", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 38}, {"id": "s39", "k": "p", "uid": "sky2713", "nick": "나는상윤", "cat": "게임", "apply": "2026-10-16", "reg": "2026-10-20", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 39}, {"id": "s40", "k": "p", "uid": "lyl9095", "nick": "『도아』", "cat": "토크/캠방", "apply": "2026-10-21", "reg": "2026-10-22", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 40}, {"id": "s41", "k": "p", "uid": "yunheehoho", "nick": "서윤♥:)", "cat": "토크/캠방", "apply": "2026-10-19", "reg": "2026-10-19", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 41}, {"id": "s42", "k": "p", "uid": "cnsgkcnehd74", "nick": "Alo.조경훈", "cat": "게임", "apply": "2026-10-01", "reg": "2026-10-02", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 42}, {"id": "s43", "k": "p", "uid": "skygkrtn", "nick": "김학수", "cat": "게임", "apply": "2026-10-20", "reg": "2026-10-21", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 43}, {"id": "s44", "k": "p", "uid": "ch1716", "nick": "최군형", "cat": "토크/캠방", "apply": "2026-10-02", "reg": "2026-10-06", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 44}, {"id": "s45", "k": "p", "uid": "gkstkd14", "nick": "댄동단장태우", "cat": "뮤직/댄스", "apply": "2026-10-16", "reg": "2026-10-16", "cnt": 0, "status": "활동중", "endDate": "-", "endWhy": "-", "ms": [], "o": 45}]/*SEED_END*/;
+var ADMIN=!/[?&]view(=|&|$)/.test(location.search);
+var LSK='soop-mentoring-v1';
+function persist(){if(!ADMIN)return;try{localStorage.setItem(LSK,JSON.stringify(DATA))}catch(e){toast('이 브라우저에 저장하지 못했어요. 시크릿 모드이거나 저장 공간이 부족할 수 있어요')}}
+function seedData(){return clone(SEED).map(function(o){o.ms=o.ms||[];return o})}
+function loadLocal(){
+  DATA=seedData();if(!ADMIN)return;
+  try{var raw=localStorage.getItem(LSK);if(raw){var a=JSON.parse(raw);if(Array.isArray(a))DATA=a.map(function(o){o.ms=o.ms||[];return o})}}catch(e){}}
+async function save(d){
+  var id=d.id,body=clone(d);delete body.id;
+  if(!DB){if(id){DATA=DATA.map(function(x){return x.id==id?d:x})}else{d.id='l'+Date.now()+Math.random().toString(36).slice(2,6);DATA.push(d)}persist();render();return}
+  var ref=id?DB.doc('mentors/'+id):DB.collection('mentors').doc();
+  await ref.set(body)}
+async function del(id){if(!DB){DATA=DATA.filter(function(x){return x.id!=id});persist();render();return}await DB.doc('mentors/'+id).delete()}
+/* ---------- 화면 ---------- */
+function filtered(){
+  var qs=LV.q.split(',').map(function(s){return s.trim().toLowerCase()}).filter(Boolean);
+  return DATA.filter(function(x){return(LV.cat=='전체'||x.cat==LV.cat)&&(!qs.length||qs.some(function(q){return((x.uid||'')+' '+(x.nick||'')).toLowerCase().indexOf(q)>-1}))})}
+function render(){
+  var h=location.hash.slice(1)||'mentors',v=h.indexOf('mentee')==0?'mentee':'mentors';
+  $('n1').className=v=='mentors'?'on':'';$('n2').className=v=='mentee'?'on':'';
+  $('st').textContent=DB?'팀 공용 저장소에 저장돼요':ready?(ADMIN?'수정 내용은 이 브라우저에 저장돼요':'보기 전용'):'불러오는 중…';
+  $('flt').style.display=v=='mentors'?'':'none';
+  if(v=='mentors'){
+    var cats=['전체'].concat(Array.from(new Set(DATA.map(function(x){return x.cat}).filter(Boolean))));
+    if(cats.indexOf(LV.cat)<0)LV.cat='전체';
+    var cs=$('cat'),want=cats.join('|');
+    if(cs.dataset.k!=want){cs.dataset.k=want;cs.innerHTML=cats.map(function(c){return'<option'+(c==LV.cat?' selected':'')+'>'+esc(c)+'</option>'}).join('')}
+    var base=filtered(),n={p:0,m:0};base.forEach(function(x){n[x.k]++});
+    $('seg').innerHTML=[['전체','전체',base.length],['p','파트너',n.p],['m','MCN',n.m]].map(function(k){return'<button data-k="'+k[0]+'" class="'+(LV.kind==k[0]?'on':'')+'">'+k[1]+' '+k[2]+'</button>'}).join('')}
+  $('sk').value=LV.sk;$('sd').textContent=LV.sd=='desc'?'↓ 내림차순':'↑ 오름차순';$('sd').disabled=!LV.sk;
+  $('main').innerHTML=v=='mentors'?mentorsView():menteeView(h.slice(7))}
+function mentorsView(){
+  if(!DATA.length&&ready)return'<div class="box"><div class="empty">'+(ADMIN?'아직 멘토가 없어요. 위의 “엑셀 불러오기”로 명단을 넣거나 “+ 멘토 추가”로 하나씩 추가해 주세요.':'아직 등록된 멘토가 없어요.')+'</div></div>';
+  var base=filtered();
+  var H=['멘토 아이디','닉네임','구분','카테고리','멘티 수','상태'];
+  var ks=['p','m'].filter(function(k){return LV.kind=='전체'||LV.kind==k});
+  return'<div class="'+(ks.length>1?'cols2':'')+'">'+ks.map(function(k){
+    var L=sortList(list(k).filter(function(x){return base.indexOf(x)>-1})),m=L.reduce(function(s,x){return s+cnt(x)},0);
+    var rows=L.length?L.map(function(x){var s=stat(x);
+      return'<tr class="go'+(s!='활동중'?' red':'')+'" data-go="'+esc(x.id)+'"><td>'+esc(x.uid)+'</td><td><span class="lnk">'+esc(x.nick)+'</span></td><td>'+KN[x.k]+'</td><td>'+esc(x.cat)+'</td><td>'+(cnt(x)?'<span class="lnk">'+cnt(x)+'</span>':'0')+'</td><td>'+esc(s)+'</td><td class="ed adm-only"><button data-ed="'+esc(x.id)+'" title="수정">✎</button></td></tr>'}).join(''):'<tr><td colspan="'+(H.length+1)+'" class="empty">조건에 맞는 멘토가 없어요</td></tr>';
+    return'<section class="sec"><h2>'+KT[k]+' <span>멘토 '+L.length+'명 · 멘티 '+m+'명</span></h2><div class="box '+k+'"><table><thead><tr>'+H.map(function(t){var s=HK[t];return s?'<th class="sortable" data-s="'+s+'" title="눌러서 정렬">'+t+(LV.sk==s?(LV.sd=='desc'?' ▼':' ▲'):'')+'</th>':'<th>'+t+'</th>'}).join('')+'<th class="adm-only"></th></tr></thead><tbody>'+rows+'</tbody></table></div></section>'}).join('')+'</div>'}
+function menteeView(id){
+  var all=list('p').concat(list('m'));
+  var c=find(id)||all.filter(function(x){return cnt(x)})[0]||all[0];CUR=c?c.id:null;
+  if(!c)return'<div class="box"><div class="empty">'+(ADMIN?'아직 멘토가 없어요. 엑셀을 불러오거나 멘토를 추가해 주세요.':'아직 등록된 멘토가 없어요.')+'</div></div>';
+  var opt=function(k){var L=list(k);return L.length?'<optgroup label="'+KT[k]+'">'+L.map(function(x){return'<option value="'+esc(x.id)+'"'+(x.id==c.id?' selected':'')+'>'+esc(lab(x))+' · '+cnt(x)+'명</option>'}).join('')+'</optgroup>':''};
+  var a='<div class="bar"><button class="btn" onclick="location.hash=\'mentors\'">← 멘토 리스트</button><select id="sel">'+opt('p')+opt('m')+'</select><button class="btn adm-only" data-a="edm">멘토 정보 수정</button><button class="btn adm-only" data-a="impm">📥 멘티 엑셀 불러오기</button><button class="btn pri adm-only" data-a="addmt">+ 멘티 추가</button></div>';
+  a+='<div class="box '+c.k+'"><table><thead><tr>'+['멘토 아이디','닉네임','구분','카테고리','신청일','등록일','멘티 수','상태','자격 해지일','자격 해지 사유','담당자'].map(function(t){return'<th>'+t+'</th>'}).join('')+'</tr></thead><tbody><tr><td>'+esc(c.uid)+'</td><td>'+esc(c.nick)+'</td><td>'+KN[c.k]+'</td><td>'+esc(c.cat)+'</td><td>'+esc(c.apply)+'</td><td>'+esc(c.reg)+'</td><td>'+cnt(c)+'</td><td>'+esc(stat(c))+'</td><td>'+esc(c.endDate)+'</td><td>'+esc(c.endWhy)+'</td><td>'+esc(c.mgr)+'</td></tr></tbody></table></div><div class="gap"></div>';
+  var sl=function(m){var u=/^https?:\/\//i.test(m.url||'')?m.url:'';return u?'<a class="lnk" href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">'+esc(m.nick)+'</a>':'<span class="lnk">'+esc(m.nick)+'</span>'};
+  a+='<div class="box p"><table><thead><tr><th>멘티</th><th>상태</th><th>요청일</th><th>지원 시작일</th><th>지원 종료일</th><th>종료 사유</th><th class="adm-only"></th></tr></thead><tbody>';
+  a+=c.ms.length?c.ms.map(function(m,i){return'<tr><td>'+sl(m)+'</td><td>'+esc(m.status)+'</td><td>'+esc(m.req)+'</td><td>'+esc(m.start)+'</td><td>'+esc(m.end)+'</td><td>'+esc(m.why||m.note)+'</td><td class="ed adm-only"><button data-a="em" data-i="'+i+'" title="수정">✎</button></td></tr>'}).join(''):'<tr><td colspan="7" class="empty">'+(!ADMIN?(c.cnt?'멘티 상세 목록이 아직 등록되지 않았어요.':'등록된 멘티가 없어요.'):c.cnt?'엑셀의 멘티 수는 '+c.cnt+'명이지만 멘티 상세 목록은 아직 없어요. “멘티 엑셀 불러오기”나 “+ 멘티 추가”로 넣을 수 있어요.':'등록된 멘티가 없어요. “멘티 엑셀 불러오기”로 넣을 수 있어요.')+'</td></tr>';
+  return a+'</tbody></table></div>'}
+/* ---------- 입력 폼 ---------- */
+function closeM(){$('ov').className='ov'}
+function openForm(title,fs,vals,onSave,onDel){
+  $('md').innerHTML='<h3>'+esc(title)+'</h3>'+fs.map(function(f){return'<label class="fl">'+esc(f.l)+(f.o?'<select data-f="'+f.k+'">'+f.o.map(function(o){return'<option'+(vals[f.k]==o?' selected':'')+'>'+esc(o)+'</option>'}).join('')+'</select>':'<input data-f="'+f.k+'" value="'+esc(vals[f.k]||'')+'" placeholder="'+esc(f.p||'')+'">')+'</label>'}).join('')+'<div class="acts">'+(onDel?'<button class="btn dan" id="mdel" style="margin-right:auto">삭제</button>':'')+'<button class="btn" id="mcx">취소</button><button class="btn pri" id="msv">저장</button></div>';
+  $('ov').className='ov on';$('mcx').onclick=closeM;
+  $('msv').onclick=async function(){var o={};document.querySelectorAll('#md [data-f]').forEach(function(i){o[i.dataset.f]=i.value.trim()});
+    if(!o[fs[0].k]){toast(fs[0].l+'을(를) 입력해 주세요');return}
+    try{await onSave(o);closeM()}catch(e){toast(e&&e.message?e.message:'저장하지 못했어요. 편집 권한이 필요할 수 있어요')}};
+  if(onDel){var d=$('mdel');d.onclick=async function(){if(!d.dataset.s){d.dataset.s=1;d.textContent='정말 삭제할까요?';return}
+    try{await onDel();closeM()}catch(e){toast('삭제하지 못했어요')}}}}
+function editMentor(id){
+  var ex=id?find(id):null,D='YYYY-MM-DD',st=ex?stat(ex):'활동중',so=['활동중','자격 해지','미신청'];if(so.indexOf(st)<0)so.push(st);
+  var fs=[{k:'uid',l:'멘토 아이디'},{k:'nick',l:'닉네임'},{k:'kind',l:'구분',o:['파트너','MCN']},{k:'cat',l:'카테고리'},{k:'apply',l:'신청일',p:D},{k:'reg',l:'등록일',p:D},{k:'cnt',l:'멘티 수 (엑셀 값)',p:'0'},{k:'status',l:'상태',o:so},{k:'endDate',l:'자격 해지일',p:D},{k:'endWhy',l:'자격 해지 사유'},{k:'mgr',l:'담당자'}];
+  var v=ex?clone(ex):{};if(ex){v.kind=KN[ex.k];v.cnt=String(ex.cnt||0);v.status=st}
+  openForm(ex?'멘토 정보 수정':'멘토 추가',fs,v,async function(o){
+    var d=ex?clone(ex):{ms:[],o:nextO()};
+    d.k=o.kind=='MCN'?'m':'p';d.uid=o.uid;d.nick=o.nick||o.uid;d.cat=o.cat;d.apply=o.apply;d.reg=o.reg;d.cnt=parseInt(o.cnt)||0;d.status=o.status;d.endDate=o.endDate;d.endWhy=o.endWhy;d.mgr=o.mgr;
+    await save(d)},ex?function(){return del(ex.id).then(function(){if(location.hash.indexOf('mentee')==1)location.hash='mentors'})}:null)}
+function editMentee(i){
+  var c=find(CUR);if(!c)return;var m=i>=0?c.ms[i]:{},D='YYYY-MM-DD',st=m.status||'활동중',so=['활동중','수락 대기','종료'];if(so.indexOf(st)<0)so.push(st);
+  var v=clone(m);v.status=st;if(!v.why&&v.note)v.why=v.note;
+  openForm(i>=0?'멘티 수정':'멘티 추가',[{k:'nick',l:'멘티 (닉네임(아이디))'},{k:'url',l:'링크 (https://…)'},{k:'status',l:'상태',o:so},{k:'req',l:'요청일',p:D},{k:'start',l:'지원 시작일',p:D},{k:'end',l:'지원 종료일',p:D},{k:'why',l:'종료 사유'}],v,async function(o){
+    if(o.url&&!/^https?:\/\//i.test(o.url))throw new Error('링크는 http:// 또는 https://로 시작해야 해요')
+    var d=clone(c),n=Object.assign({},i>=0?c.ms[i]:{},o);delete n.note;if(i>=0)d.ms[i]=n;else d.ms.push(n);await save(d)},i>=0?function(){var d=clone(c);d.ms.splice(i,1);return save(d)}:null)}
+/* ---------- 엑셀 불러오기 ---------- */
+function col(r,l,from){for(var i=from;i<r.length;i++)if(r[i]==l)return i;return -1}
+function readSheet(ws){
+  var rows=[],links=[];if(!ws||!ws['!ref'])return{rows:rows,links:links};
+  var rg=XLSX.utils.decode_range(ws['!ref']);
+  for(var R=rg.s.r;R<=rg.e.r;R++){var r=[],l=[];
+    for(var C=rg.s.c;C<=rg.e.c;C++){var c=ws[XLSX.utils.encode_cell({r:R,c:C})],v='',u='';
+      if(c){if(c.t=='n'&&c.z&&XLSX.SSF.is_date(c.z))v=XLSX.SSF.format('yyyy-mm-dd',c.v);else v=c.w!=null?c.w:(c.v==null?'':String(c.v));if(c.l&&c.l.Target)u=c.l.Target}
+      r.push(String(v).trim());l.push(u)}
+    rows.push(r);links.push(l)}
+  return{rows:rows,links:links}}
+function isMenteeHead(r){return col(r,'멘티',0)>-1&&col(r,'지원 시작일',0)>-1&&col(r,'멘토 아이디',0)<0}
+function parseMentorRows(sheets){
+  var map={},snap=false,order=[],mf=false;
+  function put(it){var key=it.k+'|'+(it.uid||it.nick);if(map[key])return map[key];map[key]=it;order.push(it);return it}
+  sheets.forEach(function(rows){
+    var specs=[];
+    rows.forEach(function(r){
+      if(isMenteeHead(r)){mf=true;specs=[];return}
+      if(col(r,'멘토 아이디',0)>-1&&col(r,'닉네임',0)>-1){snap=true;var H={};r.forEach(function(c,i){if(c&&H[c]===undefined)H[c]=i});specs=[{t:'f',H:H}];return}
+      var pa=col(r,'닉네임(아이디)',0),ma=col(r,'MCN 명',0);
+      if((pa>-1&&col(r,'신청일',0)>-1)||ma>-1){specs=[];
+        if(pa>-1)specs.push({t:'p',a:pa,ap:col(r,'신청일',pa),rg:col(r,'등록일',pa),mg:col(r,'담당자',pa)});
+        if(ma>-1)specs.push({t:'m',a:ma,id:col(r,'등록 아이디',ma),ok:col(r,'멘토 신청 여부',ma),rg:col(r,'등록일',ma),mg:col(r,'담당자',ma)});
+        return}
+      specs.forEach(function(s){
+        if(s.t=='f'){var gf=function(l){return s.H[l]===undefined?'':(r[s.H[l]]||'')},uid=gf('멘토 아이디');if(!uid)return;
+          put({k:/MCN/i.test(gf('구분'))?'m':'p',uid:uid,nick:gf('닉네임')||uid,cat:gf('카테고리'),apply:gf('신청일'),reg:gf('등록일'),cnt:parseInt(gf('멘티 수'))||0,status:gf('상태')||'활동중',endDate:gf('자격 해지일'),endWhy:gf('자격 해지 사유'),flat:true,ms:[]});return}
+        var g=function(i){return i>-1?(r[i]||''):''},nm=g(s.a);if(!nm||nm=='NO')return;
+        if(s.t=='p'){var mt=/^(.*)\(([^()]*)\)$/.exec(nm);put({k:'p',uid:mt?mt[2]:'',nick:mt?mt[1]:nm,apply:g(s.ap),reg:g(s.rg),mgr:g(s.mg),status:'활동중',ms:[]})}
+        else put({k:'m',uid:g(s.id),nick:nm,reg:g(s.rg),mgr:g(s.mg),status:g(s.ok)=='O'?'활동중':'미신청',ms:[]})})})});
+  return{list:order,snap:snap,menteeFmt:mf}}
+function parseWB(wb){return parseMentorRows(wb.SheetNames.map(function(sn){return readSheet(wb.Sheets[sn]).rows}))}
+function mid(m){var t=/\(([^()]*)\)\s*$/.exec(m.nick||'');return t?t[1]:(m.nick||'')}
+function parseMentees(rows,links){
+  var out=[],idx={},H=null;
+  rows.forEach(function(r,i){
+    if(isMenteeHead(r)){H={};r.forEach(function(c,k){if(c&&H[c]===undefined)H[c]=k});return}
+    if(!H)return;
+    var g=function(l){return H[l]===undefined?'':(r[H[l]]||'')},nick=g('멘티');if(!nick)return;
+    var u=H['멘티']!==undefined?((links[i]||[])[H['멘티']]||''):'';
+    var m={nick:nick,url:/^https?:\/\//i.test(u)?u:'',status:g('상태'),req:g('요청일'),start:g('지원 시작일'),end:g('지원 종료일'),why:g('종료 사유')},k=mid(m);
+    if(idx[k]!==undefined)out[idx[k]]=m;else{idx[k]=out.length;out.push(m)}});
+  return out}
+function parseMenteeWB(wb){var out=[];wb.SheetNames.forEach(function(sn){var s=readSheet(wb.Sheets[sn]);out=out.concat(parseMentees(s.rows,s.links))});return out}
+function matchEx(it){return DATA.filter(function(x){return it.uid?x.uid==it.uid:(x.nick==it.nick&&x.k==it.k)})[0]}
+function importPreview(P){
+  var L=P.list;
+  if(!L.length){toast(P.menteeFmt?'멘티 리스트 파일이에요. 멘티 리스트 화면의 “멘티 엑셀 불러오기”를 사용해 주세요':'불러올 명단을 찾지 못했어요. 표 머리글(멘토 아이디, 닉네임, 구분 등)을 확인해 주세요');return}
+  var plan=L.map(function(it){return{it:it,ex:matchEx(it)}}),nw=0,up=0,mt=0,pc=0,mc=0,used={};
+  plan.forEach(function(p){p.ex?up++:nw++;if(p.ex)used[p.ex.id]=1;mt+=p.it.ms.length;p.it.k=='m'?mc++:pc++});
+  var gone=DATA.filter(function(x){return!used[x.id]});
+  $('md').innerHTML='<h3>엑셀 불러오기 미리보기</h3><ul class="pv"><li>멘토 '+L.length+'명 <span>(파트너 '+pc+' · MCN '+mc+')</span></li><li>새로 추가 '+nw+'명 · 기존 정보 갱신 '+up+'명</li>'+(mt?'<li>멘티 상세 '+mt+'명</li>':'')+'</ul><p class="mut" style="margin:0">같은 멘토 아이디가 이미 있으면 엑셀 내용으로 갱신해요. 직접 입력한 멘티 목록과 담당자는 그대로 남아요.</p>'+(P.snap&&gone.length?'<label class="ck"><input type="checkbox" id="rmgone">엑셀에 없는 기존 멘토 '+gone.length+'명 목록에서 제거</label>':'')+'<div class="acts"><button class="btn" id="mcx">취소</button><button class="btn pri" id="msv">적용</button></div>';
+  $('ov').className='ov on';$('mcx').onclick=closeM;
+  $('msv').onclick=async function(){var b=this,rm=$('rmgone')&&$('rmgone').checked,i=0,o=nextO();b.disabled=true;
+    try{for(var n=0;n<plan.length;n++){var it=plan[n].it,ex=plan[n].ex,d=ex?clone(ex):{ms:[],o:o++};
+      ['k','uid','nick','cat','apply','reg','cnt','status','endDate','endWhy','mgr'].forEach(function(f){if(it[f]!==undefined&&(it.flat||it[f]||!ex))d[f]=it[f]});
+      if(P.snap)d.o=n+1;
+      it.ms.forEach(function(m){var j=d.ms.findIndex(function(x){return x.nick==m.nick});if(j>-1)d.ms[j]=m;else d.ms.push(m)});
+      await save(d);b.textContent='적용 중 '+(++i)+'/'+plan.length}
+      if(rm)for(var k=0;k<gone.length;k++)await del(gone[k].id);
+      closeM();toast('불러오기를 마쳤어요 · 멘토 '+L.length+'명'+(rm?' · '+gone.length+'명 제거':''))}
+    catch(e){b.disabled=false;b.textContent='적용';toast('저장하지 못했어요. 편집 권한이 필요할 수 있어요')}}}
+function menteePreview(L){
+  var c=find(CUR);if(!c){toast('먼저 멘토를 선택해 주세요');return}
+  if(!L.length){toast('불러올 멘티를 찾지 못했어요. 표 머리글(멘티, 상태, 지원 시작일 등)을 확인해 주세요');return}
+  var keep={},nw=0,up=0,lk=0;
+  L.forEach(function(m){var j=c.ms.findIndex(function(x){return mid(x)==mid(m)});if(j>-1){up++;keep[j]=1}else nw++;if(m.url)lk++});
+  var gone=c.ms.filter(function(x,i){return!keep[i]});
+  $('md').innerHTML='<h3>멘티 엑셀 불러오기</h3><ul class="pv"><li>대상 멘토 <span>'+esc(lab(c))+'</span></li><li>멘티 '+L.length+'명 <span>(새로 '+nw+' · 기존 갱신 '+up+')</span></li><li>링크 포함 '+lk+'명</li></ul><p class="mut" style="margin:0">엑셀 순서대로 정리돼요. 같은 아이디는 엑셀 내용으로 갱신하고, 엑셀에 링크가 없으면 기존 링크를 유지해요.</p>'+(gone.length?'<label class="ck"><input type="checkbox" id="rmgone">엑셀에 없는 기존 멘티 '+gone.length+'명 제거</label>':'')+'<div class="acts"><button class="btn" id="mcx">취소</button><button class="btn pri" id="msv">적용</button></div>';
+  $('ov').className='ov on';$('mcx').onclick=closeM;
+  $('msv').onclick=async function(){var b=this,rm=$('rmgone')&&$('rmgone').checked;b.disabled=true;
+    try{var d=clone(c);
+      var ms=L.map(function(m){var j=c.ms.findIndex(function(x){return mid(x)==mid(m)}),old=j>-1?c.ms[j]:{},n=Object.assign({},old,m);if(!m.url&&old.url)n.url=old.url;delete n.note;return n});
+      d.ms=rm?ms:ms.concat(gone);await save(d);closeM();toast('불러오기를 마쳤어요 · 멘티 '+L.length+'명')}
+    catch(e){b.disabled=false;toast('저장하지 못했어요. 편집 권한이 필요할 수 있어요')}}}
+$('f').addEventListener('change',function(e){
+  var file=e.target.files[0];e.target.value='';if(!file)return;
+  if(typeof XLSX=='undefined'){toast('엑셀 도구를 불러오지 못했어요. 새로고침 후 다시 시도해 주세요');return}
+  var r=new FileReader();r.onload=function(){try{var wb=XLSX.read(r.result,{type:'array'});if(IMP=='m')menteePreview(parseMenteeWB(wb));else importPreview(parseWB(wb))}catch(err){toast('파일을 읽지 못했어요')}};r.readAsArrayBuffer(file)});
+/* ---------- 배포용 파일 ---------- */
+async function exportSite(){
+  try{
+    var r=await fetch(location.pathname,{cache:'no-store'});if(!r.ok)throw 0;
+    var src=await r.text(),s0='/*SEED_'+'START*/',s1='/*SEED_'+'END*/',a=src.indexOf(s0),b=src.indexOf(s1);if(a<0||b<a)throw 0;
+    var out=src.slice(0,a)+s0+JSON.stringify(DATA).replace(/<\//g,'<\\/')+src.slice(b);
+    var u=URL.createObjectURL(new Blob([out],{type:'text/html'})),l=document.createElement('a');l.href=u;l.download='index.html';document.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);
+    toast('index.html을 내려받았어요. Netlify에 다시 올리면 팀원 화면에 반영돼요')
+  }catch(e){toast('배포용 파일을 만들지 못했어요. Netlify에 올린 주소(https)에서 다시 시도해 주세요')}}
+function resetLocal(){if(!confirm('이 브라우저에 저장된 수정 내용을 지우고, 배포된 명단으로 되돌릴까요?'))return;try{localStorage.removeItem(LSK)}catch(e){}DATA=seedData();render();toast('배포본으로 되돌렸어요')}
+/* ---------- 이벤트 ---------- */
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-a],[data-go],[data-ed],#seg button,th[data-s]');if(!b)return;var a=b.dataset.a;if(!ADMIN&&(a||b.dataset.ed!=null))return;
+  if(b.dataset.s){var s=b.dataset.s;if(LV.sk==s)LV.sd=LV.sd=='desc'?'asc':'desc';else{LV.sk=s;LV.sd=defDir(s)}render();return}
+  if(b.parentNode.id=='seg'){LV.kind=b.dataset.k;render();return}
+  if(b.dataset.ed!=null)return editMentor(b.dataset.ed);
+  if(b.dataset.go)return void(location.hash='mentee-'+b.dataset.go);
+  if(a=='imp'||a=='impm'){IMP=a=='impm'?'m':'p';$('f').click()}else if(a=='addp')editMentor(null);
+  else if(a=='pub')exportSite();else if(a=='rst')resetLocal();else if(a=='edm')editMentor(CUR);else if(a=='addmt')editMentee(-1);else if(a=='em')editMentee(+b.dataset.i)});
+document.addEventListener('change',function(e){if(e.target.id=='sel')location.hash='mentee-'+e.target.value});
+$('q').oninput=function(){LV.q=this.value;render()};
+$('sk').innerHTML=SORTS.map(function(s){return'<option value="'+s[0]+'">'+(s[0]?'정렬: ':'')+s[1]+'</option>'}).join('');
+$('sk').onchange=function(){LV.sk=this.value;if(LV.sk)LV.sd=defDir(LV.sk);render()};
+$('sd').onclick=function(){LV.sd=LV.sd=='desc'?'asc':'desc';render()};
+$('cat').onchange=function(){LV.cat=this.value;render()};
+$('ov').addEventListener('mousedown',function(e){if(e.target.id=='ov')closeM()});
+$('n1').onclick=function(){location.hash='mentors'};
+$('n2').onclick=function(){location.hash=CUR?'mentee-'+CUR:'mentee'};
+$('theme').onclick=function(){var r=document.documentElement,d=r.dataset.theme=='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark';this.textContent=d?'☀ 라이트':'☾ 다크'};
+addEventListener('hashchange',render);
+$('nt').textContent=ADMIN?'수정 내용은 이 브라우저에 저장돼요. 팀원에게도 반영하려면 “배포용 파일 만들기”로 받은 index.html을 Netlify에 다시 올려 주세요. 팀원에게는 주소 뒤에 ?view를 붙인 링크를 보내면 보기 전용으로 열려요.':'보기 전용 화면이에요.';
+if(ADMIN)document.body.classList.add('adm');
+/* ---------- 저장소 연결 ---------- */
+(function(){
+  function offline(){if(ready)return;ready=true;DB=null;loadLocal();render()}
+  if(!(window.claude&&claude.use)){offline();return}
+  var t=setTimeout(offline,10000);
+  claude.use('db').then(function(db){
+    if(!db){clearTimeout(t);offline();return}
+    db.collection('mentors').onSnapshot(function(s){clearTimeout(t);DB=db;ready=true;
+      DATA=s.docs.map(function(d){var o=Object.assign({},d.data());o.id=d.id;o.ms=o.ms||[];return o});render()},function(){clearTimeout(t);offline()})
+  }).catch(function(){clearTimeout(t);offline()})})();
+</script></body></html>
